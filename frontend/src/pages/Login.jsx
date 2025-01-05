@@ -62,7 +62,7 @@ const Login = ({ user, setUser }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const data = await axios.post(
-      "http://localhost:3001/api/v1/user/login",
+      "https://mern-assigment.onrender.com/api/v1/user/login",
       {
         username: username.value,
         password: password.value,
@@ -86,7 +86,7 @@ const Login = ({ user, setUser }) => {
     e.preventDefault();
     console.log("Selected Interests:", selectedInterests);
     const res = await axios.post(
-      "http://localhost:3001/api/v1/user/new",
+      "https://mern-assigment.onrender.com/api/v1/user/new",
       {
         username: username.value,
         password: password.value,

@@ -20,7 +20,7 @@ connectDB(mongoURI);
 // createUser(10);
 
 const app = express();
-const server = createServer(app);
+// const server = createServer(app);
 
 app.use(express.json());
 
@@ -36,6 +36,6 @@ app.get("/", (req, res) => {
 
 app.use(errorMiddleWare);
 // here insted of app we use the server
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`server is listening on ${PORT}`);
 });
