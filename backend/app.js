@@ -26,8 +26,9 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use(cors());
-
+app.use(cors({
+  origin:["https://exquisite-babka-e697d0.netlify.app"],
+}))
 app.use("/api/v1/user", userRoute);
 
 app.get("/", (req, res) => {
