@@ -30,7 +30,7 @@ app.use(
   cors({
     // here we can pass the origin of all things means kon kon se url allow krna hai
     // in origin we can pass the array of url
-    origin: ["http://localhost:5173", "http://localhost:4173", process.env.CLIENT_URL],
+    origin: "*",
     credentials: true,
   })
 );
