@@ -26,14 +26,7 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use(
-  cors({
-    // here we can pass the origin of all things means kon kon se url allow krna hai
-    // in origin we can pass the array of url
-    origin: "*",
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use("/api/v1/user", userRoute);
 
