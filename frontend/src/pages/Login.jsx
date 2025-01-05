@@ -68,18 +68,24 @@ const Login = () => {
   return (
     <div
       style={{
-        backgroundImage:
-          'linear-gradient(rgb(44, 80 ,68 ,46%), rgb(112, 80, 9 ,18%))',
+        backgroundImage: 'linear-gradient(rgb(44, 80, 68, 0.46), rgb(112, 80, 9, 0.18))',
+        minHeight: '100vh',
+        padding: '1rem 0',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflowY: 'auto', 
       }}
     >
       <Container
         component={'main'}
         maxWidth="xs"
         sx={{
-          height: '100vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          flexDirection: 'column',
+          minHeight: '100%',
         }}
       >
         <Paper
@@ -89,6 +95,8 @@ const Login = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            width: '100%',
+            boxSizing: 'border-box',
           }}
         >
           {isLogin ? (
@@ -131,9 +139,7 @@ const Login = () => {
                   </Typography>
                 )}
                 <Button
-                  sx={{
-                    marginTop: '1rem',
-                  }}
+                  sx={{ marginTop: '1rem' }}
                   fullWidth
                   variant="contained"
                   color="primary"
@@ -145,9 +151,7 @@ const Login = () => {
                   OR
                 </Typography>
                 <Button
-                  sx={{
-                    marginTop: '1rem',
-                  }}
+                  sx={{ marginTop: '1rem' }}
                   fullWidth
                   variant="text"
                   onClick={toggleLogin}
@@ -182,9 +186,7 @@ const Login = () => {
                       right: '0',
                       color: 'white',
                       bgcolor: 'rgba(0,0,0,0.5)',
-                      ':hover': {
-                        bgcolor: 'rgba(0,0,0,0.7)',
-                      },
+                      ':hover': { bgcolor: 'rgba(0,0,0,0.7)' },
                     }}
                     component="label"
                   >
@@ -232,7 +234,7 @@ const Login = () => {
                     </MenuItem>
                   ))}
                 </Select>
-                <Stack direction="row" spacing={1} flexWrap="wrap" mb={2}> 
+                <Stack direction="row" spacing={1} flexWrap="wrap" mb={2}>
                   {selectedInterests.map((interest) => (
                     <Button
                       key={interest}
@@ -291,9 +293,7 @@ const Login = () => {
                   </Typography>
                 )}
                 <Button
-                  sx={{
-                    marginTop: '1rem',
-                  }}
+                  sx={{ marginTop: '1rem' }}
                   fullWidth
                   variant="contained"
                   color="primary"
@@ -305,9 +305,7 @@ const Login = () => {
                   OR
                 </Typography>
                 <Button
-                  sx={{
-                    marginTop: '1rem',
-                  }}
+                  sx={{ marginTop: '1rem' }}
                   fullWidth
                   variant="text"
                   onClick={toggleLogin}

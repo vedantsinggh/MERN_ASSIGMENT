@@ -1,18 +1,16 @@
 import { TryCatch } from "./error.js";
-import {ErrorHandler} from "../utils/utility.js"
-import jwt from "jsonwebtoken"
+import { ErrorHandler } from "../utils/utility.js";
+import jwt from "jsonwebtoken";
 
+const isAuthenticated = TryCatch(async (req, res, next) => {
+  const token = req.cookies["token"];
+  // console.log("cookies", req.cookies);
 
-const isAuthenticated = TryCatch(async(req,res,next)=>{
+  if (!token) {
+    return next(new ErrorHandler("please login to access this route ", 401));
+  }
 
-    const token=req.cookies['token'];
-    // console.log("cookies", req.cookies);
-    
-   if(!token){
-    return next(new ErrorHandler("please login to access this route ",401))
-   }
-
-   try {
+  try {
     // Verify the token and extract the user ID
     const decodedData = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decodedData._id;
@@ -23,10 +21,6 @@ const isAuthenticated = TryCatch(async(req,res,next)=>{
     // Handle token verification errors (e.g., token expired or invalid)
     return next(new ErrorHandler("Invalid or expired token, please log in again", 401));
   }
+});
 
-})
-
-export {
-  isAuthenticated,
- 
-};
+export { isAuthenticated };
