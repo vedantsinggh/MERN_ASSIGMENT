@@ -24,7 +24,7 @@ const acceptRequestValidators = () => [
     .isBoolean()
     .withMessage("Accept must be boolean"),
 ];
-const mutualFriendHandler = [body("userId", "Please Enter UserId").notEmpty()];
+const mutualFriendHandler = () => [body("userId", "Please Enter UserId").notEmpty()];
 
 const validateHandler = (req, res, next) => {
   // here jo chiz present nhi rhega usse array banna kr return kr denge

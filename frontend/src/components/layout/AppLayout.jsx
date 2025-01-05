@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import Header from './Header';
-import { Title } from '../shared/Title';
-import { Grid } from '@mui/material';
-import { useParams } from 'react-router-dom';
-import  Profile  from '../specifics/Profile';
-import FriendList from '../specifics/FriendsList'; // New FriendList component
-import { sampleFriends } from '../../constants/sampledata'; // Sample friends data
+import React, { useState } from "react";
+import Header from "./Header";
+import { Title } from "../shared/Title";
+import { Grid } from "@mui/material";
+import { useParams } from "react-router-dom";
+import Profile from "../specifics/Profile";
+import FriendList from "../specifics/FriendsList"; // New FriendList component
+import { sampleFriends } from "../../constants/sampledata"; // Sample friends data
 
 const AppLayout = (WrappedComponent) => {
   return (props) => {
+    const user = props.user;
     const params = useParams();
     const [selectedFriend, setSelectedFriend] = useState(sampleFriends);
 
@@ -32,21 +33,11 @@ const AppLayout = (WrappedComponent) => {
             }}
             height={"100%"}
           >
-            <FriendList
-              friends={sampleFriends}
-              onFriendClick={handleFriendClick}
-            />
+            <FriendList friends={sampleFriends} onFriendClick={handleFriendClick} />
           </Grid>
 
           {/* Main Content Grid */}
-          <Grid
-            item
-            xs={12}
-            sm={8}
-            md={5}
-            lg={6}
-            height={"100%"}
-          >
+          <Grid item xs={12} sm={8} md={5} lg={6} height={"100%"}>
             <WrappedComponent {...props} selectedFriend={selectedFriend} />
           </Grid>
 
@@ -62,9 +53,7 @@ const AppLayout = (WrappedComponent) => {
               bgcolor: "rgba(0,0,0,0.85)",
             }}
           >
-            
-              <Profile />
-          
+            <Profile user={user}/>
           </Grid>
         </Grid>
       </>

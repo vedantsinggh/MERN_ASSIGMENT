@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -10,33 +10,36 @@ import {
   Stack,
   TextField,
   Typography,
-} from '@mui/material';
-import { CameraAlt as CameraAltIcon } from '@mui/icons-material';
-import { visuallyHiddenInput } from '../components/styles/StyledComponents'; // Ensure this import path is correct
-import { usernameValidator } from '../utils/validators';
-import { useFileHandler, useInputValidation } from '6pp';
+} from "@mui/material";
+import { CameraAlt as CameraAltIcon } from "@mui/icons-material";
+import { visuallyHiddenInput } from "../components/styles/StyledComponents"; // Ensure this import path is correct
+import { usernameValidator } from "../utils/validators";
+import { useFileHandler, useInputValidation } from "6pp";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const predefinedInterests = [
-  'Technology',
-  'Sports',
-  'Music',
-  'Travel',
-  'Reading',
-  'Gaming',
-  'Cooking',
+  "Technology",
+  "Sports",
+  "Music",
+  "Travel",
+  "Reading",
+  "Gaming",
+  "Cooking",
 ];
 
-const Login = () => {
-  const [isLogin, setIsLogin] = useState(true);
+const Login = ({ user, setUser }) => {
+  const [isLogin, setIsLogin] = useState(false);
   const [selectedInterests, setSelectedInterests] = useState([]);
-  const [customInterest, setCustomInterest] = useState('');
+  const [customInterest, setCustomInterest] = useState("");
   const toggleLogin = () => setIsLogin((prev) => !prev);
 
-  const Name = useInputValidation('');
-  const Bio = useInputValidation('');
-  const password = useInputValidation('');
-  const username = useInputValidation('', usernameValidator);
-  const avatar = useFileHandler('single');
+  const Name = useInputValidation("");
+  const Bio = useInputValidation("");
+  const password = useInputValidation("");
+  const username = useInputValidation("", usernameValidator);
+  const avatar = useFileHandler("single");
+  const navigate = useNavigate();
 
   const handleInterestSelect = (event) => {
     const value = event.target.value;
@@ -48,7 +51,7 @@ const Login = () => {
   const handleCustomInterestAdd = () => {
     if (customInterest && !selectedInterests.includes(customInterest)) {
       setSelectedInterests((prev) => [...prev, customInterest]);
-      setCustomInterest('');
+      setCustomInterest("");
     }
   };
 
@@ -56,47 +59,82 @@ const Login = () => {
     setSelectedInterests((prev) => prev.filter((i) => i !== interest));
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    const data = await axios.post(
+      "http://localhost:3001/api/v1/user/login",
+      {
+        username: username.value,
+        password: password.value,
+      },
+      {
+        httpOnly: true,
+        withCredentials: true,
+      }
+    );
+
+    console.log(data.data.user.name);
+    if (data.data.user.name.length > 0) {
+      setIsLogin(true);
+      setUser(data.data.user.name);
+      console.log(setUser);
+      navigate("/");
+    }
   };
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    console.log('Selected Interests:', selectedInterests);
+    console.log("Selected Interests:", selectedInterests);
+    const res = await axios.post(
+      "http://localhost:3001/api/v1/user/new",
+      {
+        username: username.value,
+        password: password.value,
+        name: Name.value,
+      },
+      {
+        httpOnly: true,
+        withCredentials: true,
+      }
+    );
+
+    if (res.data.success) {
+      setUser(true);
+    }
   };
 
   return (
     <div
       style={{
-        backgroundImage: 'linear-gradient(rgb(44, 80, 68, 0.46), rgb(112, 80, 9, 0.18))',
-        minHeight: '100vh',
-        padding: '1rem 0',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflowY: 'auto', 
+        backgroundImage: "linear-gradient(rgb(44, 80, 68, 0.46), rgb(112, 80, 9, 0.18))",
+        minHeight: "100vh",
+        padding: "1rem 0",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflowY: "auto",
       }}
     >
       <Container
-        component={'main'}
+        component={"main"}
         maxWidth="xs"
         sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          minHeight: '100%',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          minHeight: "100%",
         }}
       >
         <Paper
           elevation={3}
           sx={{
             padding: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-            boxSizing: 'border-box',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+            boxSizing: "border-box",
           }}
         >
           {isLogin ? (
@@ -104,8 +142,8 @@ const Login = () => {
               <Typography variant="h5">Login</Typography>
               <form
                 style={{
-                  width: '100%',
-                  marginTop: '1rem',
+                  width: "100%",
+                  marginTop: "1rem",
                 }}
                 onSubmit={handleLogin}
               >
@@ -139,7 +177,7 @@ const Login = () => {
                   </Typography>
                 )}
                 <Button
-                  sx={{ marginTop: '1rem' }}
+                  sx={{ marginTop: "1rem" }}
                   fullWidth
                   variant="contained"
                   color="primary"
@@ -147,15 +185,10 @@ const Login = () => {
                 >
                   Login
                 </Button>
-                <Typography textAlign={'center'} m={'1rem'}>
+                <Typography textAlign={"center"} m={"1rem"}>
                   OR
                 </Typography>
-                <Button
-                  sx={{ marginTop: '1rem' }}
-                  fullWidth
-                  variant="text"
-                  onClick={toggleLogin}
-                >
+                <Button sx={{ marginTop: "1rem" }} fullWidth variant="text" onClick={toggleLogin}>
                   Sign Up instead
                 </Button>
               </form>
@@ -165,36 +198,33 @@ const Login = () => {
               <Typography variant="h5">Sign Up</Typography>
               <form
                 style={{
-                  width: '100%',
-                  marginTop: '1rem',
+                  width: "100%",
+                  marginTop: "1rem",
                 }}
                 onSubmit={handleSignUp}
               >
-                <Stack position={'relative'} width={'10rem'} margin={'auto'}>
+                <Stack position={"relative"} width={"10rem"} margin={"auto"}>
                   <Avatar
                     sx={{
-                      width: '10rem',
-                      height: '10rem',
-                      objectFit: 'contain',
+                      width: "10rem",
+                      height: "10rem",
+                      objectFit: "contain",
                     }}
                     src={avatar.preview}
                   />
                   <IconButton
                     sx={{
-                      position: 'absolute',
-                      bottom: '0',
-                      right: '0',
-                      color: 'white',
-                      bgcolor: 'rgba(0,0,0,0.5)',
-                      ':hover': { bgcolor: 'rgba(0,0,0,0.7)' },
+                      position: "absolute",
+                      bottom: "0",
+                      right: "0",
+                      color: "white",
+                      bgcolor: "rgba(0,0,0,0.5)",
+                      ":hover": { bgcolor: "rgba(0,0,0,0.7)" },
                     }}
                     component="label"
                   >
                     <CameraAltIcon />
-                    <visuallyHiddenInput
-                      type="file"
-                      onChange={avatar.changeHandler}
-                    />
+                    <visuallyHiddenInput type="file" onChange={avatar.changeHandler} />
                   </IconButton>
                 </Stack>
                 <TextField
@@ -223,7 +253,7 @@ const Login = () => {
                   displayEmpty
                   value=""
                   onChange={handleInterestSelect}
-                  sx={{ marginBottom: '1rem' }}
+                  sx={{ marginBottom: "1rem" }}
                 >
                   <MenuItem disabled value="">
                     Select an interest
@@ -255,11 +285,7 @@ const Login = () => {
                     value={customInterest}
                     onChange={(e) => setCustomInterest(e.target.value)}
                   />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleCustomInterestAdd}
-                  >
+                  <Button variant="contained" color="primary" onClick={handleCustomInterestAdd}>
                     Add
                   </Button>
                 </Stack>
@@ -293,7 +319,7 @@ const Login = () => {
                   </Typography>
                 )}
                 <Button
-                  sx={{ marginTop: '1rem' }}
+                  sx={{ marginTop: "1rem" }}
                   fullWidth
                   variant="contained"
                   color="primary"
@@ -301,15 +327,10 @@ const Login = () => {
                 >
                   Sign Up
                 </Button>
-                <Typography textAlign={'center'} m={'1rem'}>
+                <Typography textAlign={"center"} m={"1rem"}>
                   OR
                 </Typography>
-                <Button
-                  sx={{ marginTop: '1rem' }}
-                  fullWidth
-                  variant="text"
-                  onClick={toggleLogin}
-                >
+                <Button sx={{ marginTop: "1rem" }} fullWidth variant="text" onClick={toggleLogin}>
                   Login
                 </Button>
               </form>

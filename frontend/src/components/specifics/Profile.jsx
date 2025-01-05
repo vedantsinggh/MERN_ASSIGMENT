@@ -7,9 +7,9 @@ import {
   Add as AddIcon,
   Delete as DeleteIcon,
 } from "@mui/icons-material";
-import  moment  from "moment";
+import moment from "moment";
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const [interests, setInterests] = useState(["Coding", "Music", "Travel"]);
   const [newInterest, setNewInterest] = useState("");
 
@@ -25,7 +25,14 @@ const Profile = () => {
   };
 
   return (
-    <Stack spacing={"2rem"} direction={"column"} alignItems={"center"} >
+    <Stack
+      spacing={"2rem"}
+      direction={"column"}
+      alignItems={"center"}
+      sx={{ maxHeight: "100vh", overflowY: "auto" }}
+      width="100%"
+      height="100%"
+    >
       <Avatar
         sx={{
           width: 200,
@@ -37,7 +44,7 @@ const Profile = () => {
         alt="Profile Avatar"
       />
 
-      <ProfileCard heading={"Name"} text={"Navin"} Icon={<FaceIcon />} />
+      <ProfileCard heading={"Name"} text={user} Icon={<FaceIcon />} />
       <ProfileCard
         heading={"Username"}
         text={"@navinpal512002@gmail.com"}
@@ -52,10 +59,21 @@ const Profile = () => {
       <Typography variant="h6" color="white">
         Interests
       </Typography>
-      <Stack direction="column" spacing={1} alignItems="center">
+      <Stack
+        direction="column"
+        spacing={1}
+        alignItems="center"
+        sx={{ overflowY: "auto", maxHeight: "250px", width: "100%" }}
+      >
         {interests.map((interest) => (
-          <Stack key={interest} direction="column" spacing={1} alignItems="center">
-            <Typography variant="body1" color="white">
+          <Stack
+            key={interest}
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            sx={{ width: "100%" }}
+          >
+            <Typography variant="body1" color="white" sx={{ flexGrow: 1 }}>
               {interest}
             </Typography>
             <IconButton onClick={() => handleRemoveInterest(interest)} size="small" color="error">
@@ -63,7 +81,7 @@ const Profile = () => {
             </IconButton>
           </Stack>
         ))}
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} alignItems="center" sx={{ width: "100%" }}>
           <TextField
             size="small"
             variant="outlined"
@@ -73,6 +91,7 @@ const Profile = () => {
             InputProps={{
               style: { color: "white" },
             }}
+            sx={{ flexGrow: 1 }}
           />
           <Button onClick={handleAddInterest} variant="contained" startIcon={<AddIcon />}>
             Add

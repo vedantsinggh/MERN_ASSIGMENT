@@ -15,7 +15,7 @@ const FriendList = ({ friends = [], onFriendClick }) => {
             name={friend.name}
             intrests={friend.intrests}
             onClick={onFriendClick}
-            isOnline={friend.isOnline} // Optional, if you want to show online status
+            isOnline={friend.isOnline} 
           />
         ))}
       </List>

@@ -30,6 +30,7 @@ const newUser = TryCatch(async (req, res, next) => {
   sendToken(res, user, 201, "User created");
 });
 const login = TryCatch(async (req, res, next) => {
+  console.log(req.body.username);
   const { username, password } = req.body;
 
   const user = await User3.findOne({ username }).select("+password");
@@ -39,7 +40,10 @@ const login = TryCatch(async (req, res, next) => {
     return next(new ErrorHandler("user doesn't exits", 404));
   }
 
-  sendToken(res, user, 201, `welcome back, ${user.name}`);
+  return res.status(200).json({
+    user,
+  });
+  // sendToken(res, user, 201, `welcome back, ${user.name}`);
 });
 
 const searchUser = TryCatch(async (req, res, next) => {});
@@ -175,8 +179,8 @@ const mutulFriends = TryCatch(async (req, res, next) => {
   });
 
   if (user.intrests && user.intrests.length > 0) {
-    recommendations = recommendations.filter(friend => 
-      friend.intrests.some(interest => user.intrests.includes(interest))
+    recommendations = recommendations.filter((friend) =>
+      friend.intrests.some((interest) => user.intrests.includes(interest))
     );
   }
 
@@ -184,10 +188,9 @@ const mutulFriends = TryCatch(async (req, res, next) => {
   recommendations.sort((a, b) => b.mutualFriends - a.mutualFriends);
 
   res.status(200).json({
-    success:"true",
-    recommendations
-  })
-
+    success: "true",
+    recommendations,
+  });
 });
 
 export { newUser, login, logout, search, sendRequest, acceptFriendRequest, mutulFriends };
