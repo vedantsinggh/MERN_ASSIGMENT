@@ -68,7 +68,6 @@ const Login = ({ user, setUser }) => {
         password: password.value,
       },
       {
-        httpOnly: true,
         withCredentials: true,
       }
     );
@@ -93,7 +92,6 @@ const Login = ({ user, setUser }) => {
         name: Name.value,
       },
       {
-        httpOnly: true,
         withCredentials: true,
       }
     );
